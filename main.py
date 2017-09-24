@@ -17,21 +17,16 @@ shuffle(deck)
 john = Player("John", deck)
 nick = Player("Nick", deck)
 
-john.takeToFull(True)
-nick.takeToFull(False)
+# john.takeToFull(True)
+# nick.takeToFull(False)
 
-match = Match(john, nick)
+player_order = (john, nick)
 
-match.playMatch()
-
-
-
-# while len(deck) > 0:
-#     round = randint(1, 4)
-#     john.playNCards(round)
-#     nick.playNCards(round)
-#     john.takeToFull(True)
-#     nick.takeToFull(False)
+while len(deck) + len(john.hand_cards) + len(nick.hand_cards) > 0:
+    player_order[0].takeToFull(True)
+    player_order[1].takeToFull(False)
+    match = Match(*player_order)
+    player_order = match.playMatch()
 
 # print(john.score())
 # print(nick.score())

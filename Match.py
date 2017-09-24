@@ -7,6 +7,13 @@ class Match:
         self.winning = first
         self.stack = []
 
+    @property
+    def looser(self):
+        if (self.winning == self.first):
+            return self.second
+
+        return self.first
+
     def evaluateWinning(self):
         firsts_card = self.stack[-2] # a card played by first i.e. second player
         seconds_card = self.stack[-1]
@@ -50,3 +57,5 @@ class Match:
 
         for _player in [self.first, self.second]:
             print("Player {} has {} points".format(_player.name, _player.score()))
+
+        return (self.winning, self.looser)
