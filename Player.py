@@ -1,4 +1,5 @@
 from random import randint
+from Helpers import assessCards
 
 class Player:
     def __init__(self, name, deck):
@@ -8,12 +9,7 @@ class Player:
         self.name = name
 
     def score(self):
-        _score = 0
-        # iterate through current archive cards and count 10s and As - each for 1 point
-        for card in self.my_archive:
-            if card == 3 or card == 7:
-                _score += 1
-        return _score
+        return assessCards(self.my_archive)
 
     # return how many cards should be taken, min: 0, max: 4
     def cardsToTake(self):
@@ -39,12 +35,10 @@ class Player:
                 self.takeCardsFromDeck(len(self.deck))
 
     def tryToPopFromHands(self, wanted_card): # TODO: allow sevens
-        # check if all is ok
-        if self.cardsToTake() > 0: print("Error: Player {} hasn't enough cards to play".format(self.name))
-
-        for i in range(4):
+        for i in range(len(self.my_cards)):
             if self.my_cards[i] == wanted_card:
-                return self.my_cards.pop(i)
+                del self.my_cards[i] # delete the wanted card from my_cards and return it
+                return wanted_card
             
         # no card of same type found in hands
         return None
@@ -52,6 +46,8 @@ class Player:
     def collectFromStack(self, stack):
         self.my_archive.extend(stack)
         stack = []
+
+    # these three methods are going to be overridden by child objects
 
     def playCardStarting(self):
         # now play a random card
@@ -67,7 +63,7 @@ class Player:
             return ideal_card
 
     def playCardRepeating(self, stack, is_winning):
-        if (is_winning or len(self.my_cards) == 0)
+        if (is_winning or len(self.my_cards) == 0):
             return None
 
         return self.tryToPopFromHands(stack[0])
