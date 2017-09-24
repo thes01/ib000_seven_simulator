@@ -24,14 +24,14 @@ class Match:
         else:
             self.winning = self.first
 
-        print("Player {} is winning after this round".format(self.winning.name))
+        # print("Player {} is winning after this round".format(self.winning.name))
 
     def playMatch(self):
         # play the first round
-        print("First round of this match!")
+        # # print("First round of this match!")
         self.stack.append(self.first.playCardStarting())
         self.stack.append(self.second.playCardResponding(self.stack))
-        printCards(self.stack)
+        # # printCards(self.stack)
         # update winning status
         self.evaluateWinning()
 
@@ -40,10 +40,10 @@ class Match:
 
         while repeat_card is not None:
             # first player has started a new round
-            print("New round of this match!")
+            # # print("New round of this match!")
             self.stack.append(repeat_card)
             self.stack.append(self.second.playCardResponding(self.stack))
-            printCards(self.stack)
+            # # printCards(self.stack)
 
             self.evaluateWinning()
 
@@ -51,11 +51,11 @@ class Match:
 
         # end of match
         # the winning player should collect the cards from stack and add to his 'archive'
-        print("End of match..")
+        # # print("End of match..")
 
         self.winning.collectFromStack(self.stack) # this also empties the stack
 
-        for _player in [self.first, self.second]:
-            print("Player {} has {} points".format(_player.name, _player.score()))
+        # # for _player in [self.first, self.second]:
+            # # print("Player {} has {} points".format(_player.name, _player.score()))
 
         return (self.winning, self.looser)

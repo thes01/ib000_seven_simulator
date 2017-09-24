@@ -17,10 +17,10 @@ class Player:
     
     # ! not protected if deck is empty
     def takeCardsFromDeck(self, n):
-        print("Player {} takes {} cards from the deck({})".format(self.name, n, len(self.deck)))
+        # # print("Player {} takes {} cards from the deck({})".format(self.name, n, len(self.deck)))
         for i in range(n):
             self.hand_cards.append(self.deck.pop())
-        print("There is now {} cards in his hands".format(len(self.hand_cards)))
+        # # print("There is now {} cards in his hands".format(len(self.hand_cards)))
 
     def takeToFull(self, first):
         # if this players draws as first then the required count of cards in deck is double (because the second one needs them as well)
