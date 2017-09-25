@@ -54,13 +54,7 @@ class Player:
         return self.hand_cards.pop()
 
     def playCardResponding(self, stack):
-        # same type ? random
-        ideal_card = self.tryToPopFromHands(stack[0])
-
-        if ideal_card is None:
-            return self.hand_cards.pop()
-        else:
-            return ideal_card
+        return self.hand_cards.pop()
 
     def playCardRepeating(self, stack, is_winning):
         if (is_winning or len(self.hand_cards) == 0):

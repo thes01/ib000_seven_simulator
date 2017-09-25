@@ -3,12 +3,13 @@
 # card format : 7:0, 8:1, 9:2, 10:3, J:4, Q:5, K:6, A:7
 from random import shuffle, randint
 from Player import Player
+from OtherPlayers import BasicPlayer, BasicPlusPlayer
 from Match import Match
 
 john_points = 0
 nick_points = 0
 
-for i in range(10000):
+for i in range(1000):
     deck = []
 
     for cardValue in range(8):
@@ -18,8 +19,8 @@ for i in range(10000):
     shuffle(deck)
     shuffle(deck)
 
-    john = Player("John", deck)
-    nick = Player("Nick", deck)
+    john = BasicPlusPlayer("John", deck)
+    nick = BasicPlusPlayer("Nick", deck)
 
     player_order = (john, nick)
 
