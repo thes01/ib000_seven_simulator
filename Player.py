@@ -2,7 +2,7 @@ from random import randint
 from Helpers import assessCards
 
 class Player:
-    def __init__(self, name, deck):
+    def __init__(self, name: str, deck: list):
         self.deck = deck
         self.hand_cards = []
         self.archive_cards = []
@@ -16,13 +16,13 @@ class Player:
         return 4 - len(self.hand_cards)
     
     # ! not protected if deck is empty
-    def takeCardsFromDeck(self, n):
+    def takeCardsFromDeck(self, n: int):
         # # print("Player {} takes {} cards from the deck({})".format(self.name, n, len(self.deck)))
         for i in range(n):
             self.hand_cards.append(self.deck.pop())
         # # print("There is now {} cards in his hands".format(len(self.hand_cards)))
 
-    def takeToFull(self, first):
+    def takeToFull(self, first: bool):
         # if this players draws as first then the required count of cards in deck is double (because the second one needs them as well)
         required_deck_length = self.cardsToTake() * 2 if first else self.cardsToTake()
 
@@ -34,7 +34,7 @@ class Player:
             else:
                 self.takeCardsFromDeck(len(self.deck))
 
-    def tryToPopFromHands(self, wanted_card): # TODO: allow sevens
+    def tryToPopFromHands(self, wanted_card: int):
         for i in range(len(self.hand_cards)):
             if self.hand_cards[i] == wanted_card:
                 del self.hand_cards[i] # delete the wanted card from hand_cards and return it
@@ -43,20 +43,20 @@ class Player:
         # no card of same type found in hands
         return None
 
-    def collectFromStack(self, stack):
+    def collectFromStack(self, stack: list):
         self.archive_cards.extend(stack)
         stack = []
 
-    # these three methods are going to be overridden by child objects
+    # these three methods are going to be overridden by child classes
 
     def playCardStarting(self):
         # now play a random card
         return self.hand_cards.pop()
 
-    def playCardResponding(self, stack):
+    def playCardResponding(self, stack: list):
         return self.hand_cards.pop()
 
-    def playCardRepeating(self, stack, is_winning):
+    def playCardRepeating(self, stack: list, is_winning: bool):
         if (is_winning or len(self.hand_cards) == 0):
             return None
 
