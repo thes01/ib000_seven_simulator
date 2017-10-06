@@ -14,3 +14,13 @@ def printCards(cards):
         message += translate_table[card_code] + ", "
 
     print(message[:-2]) # cut the ending comma and space
+
+def translateCardsToCodes(cards):
+    translate_table = ["7", "8", "9", "10", "J", "Q", "K", "A"]
+
+    return list(map(lambda card: translate_table.index(card), cards))
+
+def translateCodesToCards(codes):
+    translate_table = ["7", "8", "9", "10", "J", "Q", "K", "A"]
+
+    return list(map(lambda code: translate_table[code], codes))
