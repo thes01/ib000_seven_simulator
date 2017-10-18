@@ -1,4 +1,5 @@
 from Player import Player
+from Helpers import isValuableCard
 
 class PlayerLevelOne(Player):
     """
@@ -8,67 +9,76 @@ class PlayerLevelOne(Player):
             - repeating only if loosing
     """
 
-    def playCardStarting(self):
-        # now play a random card
-        return self.hand_cards.pop()
-
-    def playCardResponding(self, stack: list):
-        # same type ? random
-        ideal_card = self.tryToPopFromHands(stack[0])
-
-        if ideal_card is None:
-            return self.hand_cards.pop()
-        else:
-            return ideal_card
-
-    def playCardRepeating(self, stack: list, is_winning: bool):
-        if (is_winning or len(self.hand_cards) == 0):
-            return None
-
-        return self.tryToPopFromHands(stack[0])
+    def respondingStrategy(self, card:int, stack):
+        if (card == stack[0]):
+            return 1
+        return 0
 
 class PlayerLevelTwo(Player):
     """
         A player better than basic:
             - starting priority: 'nonpointer' > 'pointer' > seven
-            - responding: matching card > (-||-)
+            - responding: matching card > 'nonpointer' > 'seven' > 'pointer' - not aggressive
     """
 
-    def startingCardAttractivity(self, card: int):
+    def startingStrategy(self, card: int):
         # seven is not good for start, as well as 10 or A, so best are the 'nonpointers'
-        if (card == 0):
+        if card == 0:
             return 0
-        if (card == 3 or card == 7):
+        if isValuableCard(card):
             return 1
         return 2
 
-    def getBestCard(self, cards: list, mapping_function):
-        # lets assess each card (its attractivity) and store the key/value in order to get the highest possible
-        best_val = -1
-        best_index = -1
+    def respondingStrategy(self, card: int, stack):
+        if card == stack[0]:
+            return 3
+        if card == 0:
+            return 1
+        if isValuableCard(card):
+            return 0
+        return 2
 
-        for i in range(len(cards)):
-            if (mapping_function(cards[i])) > best_val):
-                best_val = mapping_function(cards[i])
-                best_index = i
+    def repeatingStrategy(self, card: int, stack):
+        if card == stack[0]:
+            return 2
+        if card == 0: # seven
+            return 1
+        return -1
 
-        best_card = cards[best_index]
-        del cards[best_index]
+class PlayerLevelThree(Player):
+    """
+        - starting priority - prefers the most repeatable cards
+        - responding - similar
+        - repeating if has enough cards even if it is winning
+    """
+    def startingStrategy(self, card:int):
+        if card == 0:
+            return 0
+        if isValuableCard(card):
+            return self.cardRepeatingAbility(card)
 
-    def playCardStarting(self):
-        return self.getBestCard(self.my_cards, self.startingCardAttractivity)
+        return 2 + self.cardRepeatingAbility(card)
 
-    def playCardResponding(self, stack):
-        # same type ? random
-        ideal_card = self.tryToPopFromHands(stack[0])
+    def respondingStrategy(self, card:int, stack):
+        if card == stack[0]:
+            return 3
+        if card == 0:
+            return 1
+        if isValuableCard(card):
+            return 0
+        else: 
+            return 2
 
-        if ideal_card is None:
-            return self.playCardStarting()
-        else:
-            return ideal_card
+    def repeatingStrategy(self, card:int, stack):
+        if card == stack[0]:
+            return 2
+        if card == 0: # seven
+            return 1
+        return -1
+    
+    def stopRepeatingCondition(self, stack: list, is_winning: bool):
+        return len(self.hand_cards) == 0
 
-    def playCardRepeating(self, stack, is_winning):
-        if (is_winning or len(self.hand_cards) == 0):
-            return None
-
-        return self.tryToPopFromHands(stack[0])
+class PlayerLevelThreeNonAggressive(PlayerLevelThree):
+    def stopRepeatingCondition(self, stack: list, is_winning: bool):
+        return len(self.hand_cards) == 0 or not isValuableCard(stack[0])
