@@ -10,18 +10,19 @@ def assessCards(cards):
 
 def translateCardsToCodes(cards):
     translate_table = ["7", "8", "9", "10", "J", "Q", "K", "A"]
-
     return list(map(lambda card: translate_table.index(card), cards))
 
 def translateCodesToCards(codes):
-    translate_table = ["7", "8", "9", "10", "J", "Q", "K", "A"]
+    return list(map(translateCodeToCard, codes))
 
-    return list(map(lambda code: translate_table[code], codes))
+def translateCodeToCard(code):
+    translate_table = ["7", "8", "9", "10", "J", "Q", "K", "A"]
+    return translate_table[code]
 
 def isValuableCard(card):
-    return card == "3" or card == "7";
+    return card == 3 or card == 7;
 
-def generateRandomDeck(deck: list):
+def generateNewRandomDeck(deck: list):
     deck.clear()
 
     for cardValue in range(8):
@@ -29,6 +30,3 @@ def generateRandomDeck(deck: list):
             deck.append(cardValue)
 
     shuffle(deck)
-    shuffle(deck)
-
-def gameConsole()

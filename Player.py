@@ -1,33 +1,30 @@
 from random import randint
-from Helpers import assessCards
+from Helpers import *
 from NotifyModule import NotifyModule
-
+ 
 class Player(NotifyModule):
-    def __init__(self, name: str, deck: list):
-        self.deck = deck
+    def __init__(self, name: str): 
+        self.deck = []
         self.hand_cards = []
         self.archive_cards = []
         self.name = name
-
-    @property
-    def score(self):
-        return assessCards(self.archive_cards)
+        self.score = 0
 
     # return how many cards should be taken, min: 0, max: 4
     @property
     def cards_to_take(self):
         return 4 - len(self.hand_cards)
+
+    def endOfGame(self): 
+        self.archive_cards = []
+        self.score = 0
     
     def takeCardsFromDeck(self, n: int):
-        self.notify("Player {} takes {} cards from the deck({})".format(self.name, n, len(self.deck)))
-        
         if (len(self.deck) < n):
             raise IndexError("There is not enough cards in the deck")
 
         for i in range(n):
             self.hand_cards.append(self.deck.pop())
-        
-        self.notify("There is now {} cards in his hands".format(len(self.hand_cards)))
 
     def takeToFull(self, first: bool):
         # if this players draws as first then the required count of cards in deck is double (because the second one needs them as well)
@@ -42,6 +39,7 @@ class Player(NotifyModule):
                 self.takeCardsFromDeck(len(self.deck))
 
     def collectFromStack(self, stack: list):
+        self.score += assessCards(stack)
         # put the cards from current stack to archive
         self.archive_cards.extend(stack)
         stack = []
@@ -59,8 +57,11 @@ class Player(NotifyModule):
         best_val = -1
         best_index = -1
 
+        self.notify("{}'s cards:".format(self.name),2)
+
         for i in range(len(cards)):
             result = mapping_function(cards[i], **mapping_functions_kwargs)
+            self.notify("score({})={}".format(translateCodeToCard(cards[i]), result), 2)
             if (result > best_val):
                 best_val = result
                 best_index = i
@@ -79,7 +80,7 @@ class Player(NotifyModule):
         return self.takeBestCard(self.hand_cards, self.respondingStrategy, stack=stack)
 
     def playCardRepeating(self, stack: list, is_winning: bool):
-        if (self.stopRepeatingCondition(stack, is_winning)):
+        if (len(self.hand_cards) == 0 or self.stopRepeatingCondition(stack, is_winning)):
             return None
 
         return self.takeBestCard(self.hand_cards, self.repeatingStrategy, stack=stack)
@@ -98,4 +99,4 @@ class Player(NotifyModule):
         else: return -1
 
     def stopRepeatingCondition(self, stack: list, is_winning: bool):
-        return is_winning or len(self.hand_cards) == 0
+        return False
