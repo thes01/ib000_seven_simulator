@@ -1,11 +1,12 @@
 from random import randint
 from Helpers import *
 from Notifier import Notifier
- 
+
+
 class Player():
-    def __init__(self, name: str): 
+    def __init__(self, name: str):
         self.deck = []
-        self.hand_cards = []        
+        self.hand_cards = []
         self.archive_cards = []
         self.name = name
         self.score = 0
@@ -17,10 +18,10 @@ class Player():
         return 4 - len(self.hand_cards)
 
     # reset some values
-    def endOfGame(self): 
+    def endOfGame(self):
         self.archive_cards = []
         self.score = 0
-    
+
     def takeCardsFromDeck(self, n: int):
         if (len(self.deck) < n):
             raise IndexError("There is not enough cards in the deck")
@@ -36,7 +37,7 @@ class Player():
             self.takeCardsFromDeck(self.cards_to_take)
         else:
             if first:
-                self.takeCardsFromDeck(len(self.deck) // 2) # if players draws first, then the deck length is always even
+                self.takeCardsFromDeck(len(self.deck) // 2)  # if players draws first, then the deck length is always even
             else:
                 self.takeCardsFromDeck(len(self.deck))
 
@@ -49,20 +50,20 @@ class Player():
     def cardRepeatingAbility(self, card: int):
         _count = 0
         for _card in self.hand_cards:
-            if _card == 0 or _card == card: 
+            if _card == 0 or _card == card:
                 _count += 1
 
         return _count
 
-    def takeBestCard(self, cards:list, mapping_function, **mapping_functions_kwargs):
+    def takeBestCard(self, cards: list, mapping_function, **map_fn_args):
         # let's assess each card (its attractiveness) and store the key/value in order to get the highest possible
         best_val = -1
         best_index = -1
 
-        self.notifier.notify("{}'s cards:".format(self.name),2)
+        self.notifier.notify("{}'s cards:".format(self.name), 2)
 
         for i in range(len(cards)):
-            result = mapping_function(cards[i], **mapping_functions_kwargs)
+            result = mapping_function(cards[i], **map_fn_args)
             self.notifier.notify("score({})={}".format(translateCodeToCard(cards[i]), result), 2)
             if (result > best_val):
                 best_val = result
@@ -98,7 +99,8 @@ class Player():
     def repeatingStrategy(self, card: int, stack):
         if (card == stack[0]):
             return 1
-        else: return -1
+
+        return -1
 
     def stopRepeatingCondition(self, stack: list, is_winning: bool):
         return False

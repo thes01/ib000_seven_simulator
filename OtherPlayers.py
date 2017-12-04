@@ -1,6 +1,7 @@
 from Player import Player
 from Helpers import *
- 
+
+
 class PlayerLevelOne(Player):
     """
         This is the most basic player:
@@ -9,10 +10,11 @@ class PlayerLevelOne(Player):
             - repeating only if loosing
     """
 
-    def respondingStrategy(self, card:int, stack):
+    def respondingStrategy(self, card: int, stack):
         if (card == stack[0]):
             return 1
         return 0
+
 
 class PlayerLevelTwo(Player):
     """
@@ -41,9 +43,10 @@ class PlayerLevelTwo(Player):
     def repeatingStrategy(self, card: int, stack):
         if card == stack[0]:
             return 2
-        if card == 0: # seven
+        if card == 0:  # seven
             return 1
         return -1
+
 
 class PlayerLevelThree(Player):
     """
@@ -51,7 +54,7 @@ class PlayerLevelThree(Player):
         - responding - similar
         - repeating if has enough cards even if it is winning
     """
-    def startingStrategy(self, card:int):
+    def startingStrategy(self, card: int):
         if card == 0:
             return 0
         if isValuableCard(card):
@@ -59,25 +62,25 @@ class PlayerLevelThree(Player):
 
         return 2 + self.cardRepeatingAbility(card)
 
-    def respondingStrategy(self, card:int, stack):
+    def respondingStrategy(self, card: int, stack):
         if card == stack[0]:
             return 3
         if card == 0:
             return 1
         if isValuableCard(card):
             return 0
-        else: 
-            return 2
+        return 2
 
-    def repeatingStrategy(self, card:int, stack):
+    def repeatingStrategy(self, card: int, stack):
         if card == stack[0]:
             return 2
-        if card == 0: # seven
+        if card == 0:  # seven
             return 1
         return -1
-    
+
     def stopRepeatingCondition(self, stack: list, is_winning: bool):
         return False
+
 
 class SensiblePlayer(Player):
     """
@@ -99,7 +102,7 @@ class SensiblePlayer(Player):
 
         if isValuableCard(card) and _repeatability < self.VALUABLE_STARTING_MIN_REPEATABILITY:
             return 0
-        
+
         return _repeatability
 
     def respondingStrategy(self, card: int, stack):
@@ -148,5 +151,5 @@ class SensiblePlayer(Player):
         _stack_value = assessCards(stack)
         if _stack_value < self.MIN_STACK_VALUE_TO_REPEAT:
             return True
-        
+
         return False

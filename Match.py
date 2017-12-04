@@ -2,6 +2,7 @@ from Helpers import *
 from Notifier import Notifier
 from Player import Player
 
+
 class Match():
     def __init__(self, starting_player: Player, responding_player: Player):
         self.starting_player = starting_player
@@ -18,7 +19,7 @@ class Match():
         return self.starting_player
 
     def evaluateWinning(self):
-        starting_card = self.stack[0] # a card played by starting_player
+        starting_card = self.stack[0]  # a card played by starting_player
         responding_players_card = self.stack[-1]
 
         if responding_players_card == starting_card or responding_players_card == 0:
@@ -58,7 +59,7 @@ class Match():
         # the winning player should collect the cards from stack and add to his 'archive'
         self.notifier.notify("End of match..")
 
-        self.winning.collectFromStack(self.stack) # this also empties the stack
+        self.winning.collectFromStack(self.stack)  # this also empties the stack
 
         for _player in [self.starting_player, self.responding_player]:
             self.notifier.notify("Player {} has {} points".format(_player.name, _player.score))

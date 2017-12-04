@@ -3,6 +3,7 @@ from Helpers import *
 from Notifier import Notifier
 from Match import Match
 
+
 class Tournament():
     def __init__(self, player1: Player, player2: Player, n_games: int):
         if n_games % 2 == 0:
@@ -19,13 +20,13 @@ class Tournament():
         self.n_games = n_games
 
         self.player1_stats = {
-            'games_won' : 0,
-            'total_points' : 0
+            'games_won': 0,
+            'total_points': 0
         }
 
         self.player2_stats = {
-            'games_won' : 0,
-            'total_points' : 0
+            'games_won': 0,
+            'total_points': 0
         }
 
         self.notifier = Notifier()
