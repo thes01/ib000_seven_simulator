@@ -1,13 +1,13 @@
 from random import randint
-from Helpers import *
+from Helpers import translateCodeToCard, assessCards
 from Notifier import Notifier
 
 
 class Player():
     def __init__(self, name: str):
-        self.deck = []
-        self.hand_cards = []
-        self.archive_cards = []
+        self.deck = []  # remaining cards available for the game (32 at the very beginning)
+        self.hand_cards = []  # cards in the hand (max 4 according to the rules)
+        self.archive_cards = []  # cards that have been played
         self.name = name
         self.score = 0
         self.notifier = Notifier()
@@ -37,11 +37,13 @@ class Player():
             self.takeCardsFromDeck(self.cards_to_take)
         else:
             if first:
-                self.takeCardsFromDeck(len(self.deck) // 2)  # if players draws first, then the deck length is always even
+                # if players draws first, then the deck length is always even
+                self.takeCardsFromDeck(len(self.deck) // 2)
             else:
                 self.takeCardsFromDeck(len(self.deck))
 
     def collectFromStack(self, stack: list):
+        """ empty the stack and put the cards to archive """
         self.score += assessCards(stack)
         # put the cards from current stack to archive
         self.archive_cards.extend(stack)
@@ -56,7 +58,7 @@ class Player():
         return _count
 
     def takeBestCard(self, cards: list, mapping_function, **map_fn_args):
-        # let's assess each card (its attractiveness) and store the key/value in order to get the highest possible
+        """ assess each card with mapping function and get the one with the highest score """
         best_val = -1
         best_index = -1
 
@@ -64,7 +66,8 @@ class Player():
 
         for i in range(len(cards)):
             result = mapping_function(cards[i], **map_fn_args)
-            self.notifier.notify("score({})={}".format(translateCodeToCard(cards[i]), result), 2)
+            self.notifier.notify("score({})={}".format(
+                                    translateCodeToCard(cards[i]), result), 2)
             if (result > best_val):
                 best_val = result
                 best_index = i
@@ -88,7 +91,8 @@ class Player():
 
         return self.takeBestCard(self.hand_cards, self.repeatingStrategy, stack=stack)
 
-    # these methods are going to be overridden by child classes and return value always for ONE particular card
+    """ following methods are going to be overridden by child classes
+        and return value always for ONE particular card """
 
     def startingStrategy(self, card: int):
         return 0
