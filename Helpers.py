@@ -1,14 +1,15 @@
 from random import shuffle
 
 def assessCards(cards):
+    """ iterate through cards and return number of points in there"""
     score = 0
-    # iterate through cards and count points from 10s and As - each for 1 point
     for card in cards:
         if card == 3 or card == 7:
             score += 1
     return score
 
 def translateCardsToCodes(cards):
+    """ 'translate' human-readable card values to its code variants """
     translate_table = ["7", "8", "9", "10", "J", "Q", "K", "A"]
     return list(map(lambda card: translate_table.index(card), cards))
 
@@ -20,13 +21,9 @@ def translateCodeToCard(code):
     return translate_table[code]
 
 def isValuableCard(card):
-    return card == 3 or card == 7;
+    return card == 3 or card == 7
 
 def generateNewRandomDeck(deck: list):
     deck.clear()
-
-    for cardValue in range(8):
-        for n in range(4):
-            deck.append(cardValue)
-
+    deck.extend([0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7])
     shuffle(deck)

@@ -5,7 +5,7 @@ from NotifyModule import NotifyModule
 class Player(NotifyModule):
     def __init__(self, name: str): 
         self.deck = []
-        self.hand_cards = []
+        self.hand_cards = []        
         self.archive_cards = []
         self.name = name
         self.score = 0
@@ -15,6 +15,7 @@ class Player(NotifyModule):
     def cards_to_take(self):
         return 4 - len(self.hand_cards)
 
+    # reset some values
     def endOfGame(self): 
         self.archive_cards = []
         self.score = 0
@@ -85,7 +86,7 @@ class Player(NotifyModule):
 
         return self.takeBestCard(self.hand_cards, self.repeatingStrategy, stack=stack)
 
-    # these methods are going to be overridden by child classes
+    # these methods are going to be overridden by child classes and return value always for ONE particular card
 
     def startingStrategy(self, card: int):
         return 0
