@@ -80,7 +80,9 @@ class PlayerLevelThree(Player):
         return False
 
 class SensiblePlayer(Player):
-
+    """
+        - 
+    """
     def __init__(self, name: str):
         super().__init__(name)
 

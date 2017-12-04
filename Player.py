@@ -1,14 +1,15 @@
 from random import randint
 from Helpers import *
-from NotifyModule import NotifyModule
+from Notifier import Notifier
  
-class Player(NotifyModule):
+class Player():
     def __init__(self, name: str): 
         self.deck = []
         self.hand_cards = []        
         self.archive_cards = []
         self.name = name
         self.score = 0
+        self.notifier = Notifier()
 
     # return how many cards should be taken, min: 0, max: 4
     @property
@@ -58,11 +59,11 @@ class Player(NotifyModule):
         best_val = -1
         best_index = -1
 
-        self.notify("{}'s cards:".format(self.name),2)
+        self.notifier.notify("{}'s cards:".format(self.name),2)
 
         for i in range(len(cards)):
             result = mapping_function(cards[i], **mapping_functions_kwargs)
-            self.notify("score({})={}".format(translateCodeToCard(cards[i]), result), 2)
+            self.notifier.notify("score({})={}".format(translateCodeToCard(cards[i]), result), 2)
             if (result > best_val):
                 best_val = result
                 best_index = i

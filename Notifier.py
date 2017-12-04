@@ -1,4 +1,4 @@
-class NotifyModule:
+class Notifier:
     notify_level = 1
 
     def notify(self, text: str, level = 1):

@@ -1,9 +1,9 @@
 from Player import Player
 from Helpers import *
-from NotifyModule import NotifyModule
+from Notifier import Notifier
 from Match import Match
 
-class Tournament(NotifyModule):
+class Tournament():
     def __init__(self, player1: Player, player2: Player, n_games: int):
         if n_games % 2 == 0:
             raise ValueError("Error: number of games in tournament must be an odd number!")
@@ -28,6 +28,8 @@ class Tournament(NotifyModule):
             'total_points' : 0
         }
 
+        self.notifier = Notifier()
+
     @property
     def responding_player(self):
         return self.player1 if self.starting_player == self.player2 else self.player2
@@ -49,12 +51,12 @@ class Tournament(NotifyModule):
 
             if self.player1.score > self.player2.score:
                 self.player1_stats['games_won'] += 1
-                self.notify("End of game No.{} Player {} has won with {} points".format(
+                self.notifier.notify("End of game No.{} Player {} has won with {} points".format(
                     game+1, self.player1.name, self.player1.score
                 ))
             else:
                 self.player2_stats['games_won'] += 1
-                self.notify("End of game No.{} Player {} has won with {} points".format(
+                self.notifier.notify("End of game No.{} Player {} has won with {} points".format(
                     game+1, self.player2.name, self.player2.score
                 ))
 

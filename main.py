@@ -3,14 +3,14 @@
 # card format : 7:0, 8:1, 9:2, 10:3, J:4, Q:5, K:6, A:7
 from Player import Player
 from OtherPlayers import *
-from NotifyModule import NotifyModule
+from Notifier import Notifier
 from Tournament import Tournament
 
 N_TOTAL_TOURNAMENTS = 200
 N_GAMES_IN_TOURNAMENT = 11
 
 # global settings for notify module, 0 = no messages, 2 = all messages
-NotifyModule.notify_level = 0
+Notifier.notify_level = 0
 
 first = SensiblePlayer("Zacinajici hrac")
 second = SensiblePlayer("Odpovidajici hrac")
