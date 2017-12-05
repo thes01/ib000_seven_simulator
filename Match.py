@@ -13,12 +13,13 @@ class Match():
 
     @property
     def looser(self):
-        if (self.winning == self.starting_player):
+        if self.winning == self.starting_player:
             return self.responding_player
 
         return self.starting_player
 
     def evaluateWinning(self):
+        """ decide which player is currently winning the match and put it to winning variable """
         starting_card = self.stack[0]  # a card played by starting_player
         responding_players_card = self.stack[-1]
 
@@ -44,7 +45,7 @@ class Match():
         # now ask if the starting_player player wants a new round
         repeat_card = self.starting_player.playCardRepeating(self.stack, self.winning == self.starting_player)
 
-        while repeat_card != None:
+        while repeat_card is not None:
             # starting_player player has started a new round
             self.notifier.notify("New round of this match!")
             self.stack.append(repeat_card)

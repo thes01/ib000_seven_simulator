@@ -1,5 +1,3 @@
-# card generator
-
 # card format : 7:0, 8:1, 9:2, 10:3, J:4, Q:5, K:6, A:7
 from Player import Player
 from SensiblePlayer import SensiblePlayer
@@ -18,7 +16,7 @@ second = SensiblePlayer("Odpovidajici hrac")
 with open('output_t.csv', 'a') as output:
     # generate possible 4-tuples for all value combinations 0-4, 0-4, 0-4, True/False
     combinations = [(a, b, c, d)
-                    for a in range(4, 5)
+                    for a in range(5)
                     for b in range(5)
                     for c in range(5)
                     for d in range(2)]
